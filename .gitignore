@@ -1,4 +1,4 @@
-dbUrl.txt
+src/server/dbURL.js
 .vscode
 node_modules
 dist

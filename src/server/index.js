@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const os = require('os');
-
+const dbURL = require('./dbURL')
 const User = require("./users");
 
 const app = express();
-mongoose.connect('mongodb://kartikay26:almaLibre123@ds119795.mlab.com:19795/alma_libre_lab');
-
+const fs = require('fs') 
+  
+ 
+mongoose.connect(dbroute,{ useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
