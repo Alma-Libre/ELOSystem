@@ -1,0 +1,6 @@
+dbUrl.txt
+.vscode
+node_modules
+dist
+*.log
+yarn.lock
