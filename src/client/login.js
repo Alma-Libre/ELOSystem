@@ -22,6 +22,7 @@ export default class Login extends React.Component {
 	handleSubmit(event) {
 		//alert('Username is ' + this.state.username + ' Password is' + this.state.password);
 		event.preventDefault();
+		this.props.history.push('/');
 		// axios.post('/authenticate',{
 		// 	username: this.state.username,
 		// 	password: this.state.password 

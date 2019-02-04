@@ -15,7 +15,6 @@ export default class App extends Component {
     return (
       <div>
         {data ? <h1>{`Hello ${data[0]['username']}`}</h1> : <h1>Loading.. please wait!</h1>}
-        {/*<img src={ReactImage} alt="react" />*/}
       </div>
     );
   }
