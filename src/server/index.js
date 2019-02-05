@@ -19,4 +19,10 @@ app.get('/api/getusers', (req, res) => {
 	});
 });
 
+app.get('/api/amiloggedin',
+	(req, res) => {
+		res.json({'loggedin': true});
+	}
+);
+
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
