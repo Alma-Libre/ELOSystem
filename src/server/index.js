@@ -8,29 +8,38 @@ const User = require("./users");
 
 const app = express();
 
-mongoose.connect(dburl.dbroute,{ useNewUrlParser: true });
+mongoose.connect(dburl.dbroute, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', function () {
 	console.log("connected!");
 });
 
 passport.use(new Strategy(
-	function (username, password, cb) {
-		if (username == 'almalibre' && password == 'password')
-			cb(null, { id: 1, username: "almalibre", password: 'password' });
-		else
-			cb(null, false);
+	function (username, password, done) {
+		User.findOne({ username: username }, (err, user) => {
+			if (user) {
+				console.log(user);
+				if (password == user.password)
+					done(null, user);
+				else
+					done(null, false, { message: "Incorrect Password" });
+			} else {
+				done(null, false, { message: "No such user" });
+			}
+		});
 	}
 ));
 
-passport.serializeUser(function (user, cb) {
-	cb(null, user.id);
+passport.serializeUser(function (user, done) {
+	done(null, user._id);
 });
 
-passport.deserializeUser(function (id, cb) {
-	if (id == 1) cb(null, { id: 1, username: "k", password: "p" });
-	else cb(null, false);
+passport.deserializeUser(function (id, done) {
+	User.findOne({ _id: id }, (err, user) => {
+		if (user) done(null, user);
+		else done(null, false);
+	});
 });
 
 app.use(require('cookie-parser')());
@@ -42,7 +51,7 @@ app.use(passport.session());
 
 app.use(express.static('dist'));
 
-function ensureLoggedin () {
+function ensureLoggedin() {
 	return function (req, res, next) {
 		if (!req.isAuthenticated || !req.isAuthenticated()) {
 			return res.send(401);
@@ -52,7 +61,7 @@ function ensureLoggedin () {
 }
 
 app.get('/api/getusers', (req, res) => {
-	User.find((err, data)=>{
+	User.find((err, data) => {
 		res.json(data);
 	});
 });
@@ -67,7 +76,7 @@ app.post('/api/login',
 app.get('/api/amiloggedin',
 	ensureLoggedin(),
 	function (req, res) {
-		res.json({'loggedin': true});
+		res.json({ 'loggedin': true });
 	}
 );
 
