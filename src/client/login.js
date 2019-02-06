@@ -1,5 +1,19 @@
 import React, { Component } from 'react';
 
+function sendLogin(username, password, cb) {
+	let formData = new URLSearchParams();
+	formData.append('username', username);
+	formData.append('password', password);
+	fetch("/api/login", {
+			body: formData,
+			method: "post"
+		})
+		.then((res) => res.json())
+		.then((data) => {
+			cb(data);
+		});
+}
+
 export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +35,10 @@ export default class Login extends React.Component {
 	handleSubmit(event) {
 		//alert('Username is ' + this.state.username + ' Password is' + this.state.password);
 		event.preventDefault();
-		this.props.history.push('/check');
+		sendLogin(this.state.username, this.state.password, (data) => {
+			console.log(data);
+			this.props.history.push('/check');
+		});
 	}
 
 	render() {

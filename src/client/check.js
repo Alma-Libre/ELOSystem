@@ -6,7 +6,7 @@ export default class Check extends Component {
   componentDidMount() {
     fetch('/api/amiloggedin')
       .then(res => res.json())
-      .then(data => this.setState({ loggedin: data.loggedin }));
+      .then(data => this.setState({ loggedin: data.loggedin }))
   }
 
   render() {
