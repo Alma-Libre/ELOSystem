@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const passwordHash = require('password-hash');
 const Strategy = require('passport-local').Strategy;
 
 const dburl = require('./dbURL')
@@ -19,8 +20,7 @@ passport.use(new Strategy(
 	function (username, password, done) {
 		User.findOne({ username: username }, (err, user) => {
 			if (user) {
-				console.log(user);
-				if (password == user.password)
+				if (passwordHash.verify(password, user.password))
 					done(null, user);
 				else
 					done(null, false, { message: "Incorrect Password" });
