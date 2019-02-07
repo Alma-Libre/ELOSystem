@@ -80,4 +80,9 @@ app.get('/api/amiloggedin',
 	}
 );
 
+app.get('/api/logout', function(req, res){
+	req.logout();
+	res.redirect('/');
+	});
+
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
